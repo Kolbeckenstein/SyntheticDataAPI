@@ -8,5 +8,8 @@ name = "pypi"
 [requires]
 python_version = "3.8"
 
+[packages]
+multipart = "*"
+
 [packages.fastapi]
 extras = [ "all",]

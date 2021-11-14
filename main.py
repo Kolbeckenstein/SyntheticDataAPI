@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Depends
 import uuid
 import os
 import zipfile
@@ -9,22 +9,25 @@ from starlette.responses import StreamingResponse
 app = FastAPI()
 
 @app.get("/")
-async def root():
-    directory_uuid = str(uuid.uuid4())
-    synthea_dir = "../synthea/" + directory_uuid
-    os.mkdir(synthea_dir)
-    os.system("cd ../synthea && ./run_synthea --exporter.baseDirectory  \"" + directory_uuid + "\"")
-    shutil.make_archive(synthea_dir, 'zip', synthea_dir)
+async def root(token: str = ""):
+    print("-=-=-=-=")
+    print(token)
+    if token == "helloDave":
+        directory_uuid = str(uuid.uuid4())
+        synthea_dir = "../synthea/" + directory_uuid
+        os.mkdir(synthea_dir)
+        os.system("cd ../synthea && ./run_synthea --exporter.baseDirectory  \"" + directory_uuid + "\"")
+        shutil.make_archive(synthea_dir, 'zip', synthea_dir)
 
-    s = open(synthea_dir + ".zip", "rb")
+        s = open(synthea_dir + ".zip", "rb")
 
-    resp = StreamingResponse(s, media_type="application/x-zip-compressed", headers={
-        'Content-Disposition': f'attachment;filename={directory_uuid+".zip"}'
-    })
+        resp = StreamingResponse(s, media_type="application/x-zip-compressed", headers={
+            'Content-Disposition': f'attachment;filename={directory_uuid+".zip"}'
+        })
 
-    os.system("rm -rf " + synthea_dir)
-    os.system("rm " + synthea_dir + ".zip")
+        os.system("rm -rf " + synthea_dir)
+        os.system("rm " + synthea_dir + ".zip")
 
-    return resp
-
-    # return {"message": directory_uuid}
+        return resp
+    else:
+        return Response("UNAUTHORIZED, KNAVE")
