@@ -10,9 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root(token: str = ""):
-    print("-=-=-=-=")
-    print(token)
-    if token == "helloDave":
+    if token == os.getenv('SDAPI_PASSWORD'):
         directory_uuid = str(uuid.uuid4())
         synthea_dir = "../synthea/" + directory_uuid
         os.mkdir(synthea_dir)
