@@ -10,6 +10,14 @@ python_version = "3.8"
 
 [packages]
 multipart = "*"
+geopandas = "*"
+python-dotenv = "*"
+pytest = "*"
+pytest-mock = "*"
+docker = "*"
 
 [packages.fastapi]
 extras = [ "all",]
+
+[packages.black]
+git = "https://github.com/psf/black"
