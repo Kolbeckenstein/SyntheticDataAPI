@@ -1,20 +1,4 @@
-# shutil.make_archive(synthea_dir, "zip", synthea_dir)
-
-# s = open(synthea_dir + ".zip", "rb")
-
-# resp = StreamingResponse(
-#     s,
-#     media_type="application/x-zip-compressed",
-#     headers={
-#         "Content-Disposition": f'attachment;filename={directory_uuid+".zip"}'
-#     },
-# )
-
-# os.system("rm -rf " + synthea_dir)
-# os.system("rm " + synthea_dir + ".zip")
-
 import docker
-
 
 class Generator:
     def generate_synthea_patient():
@@ -28,20 +12,9 @@ class Generator:
                 "FHIR_URL": "http://172.19.0.2:80/generate_receive"
             }
         )
-        # os.system("docker run --rm --network=syntheticdatagenerator_default -e SYNTHEA_SIZE=1 -e FHIR_URL=http://172.19.0.2:80/generate_receive conceptant/synthea-fhir")
 
-
-        # directory_uuid = str(uuid.uuid4())
-        # synthea_dir = "../synthea/" + directory_uuid
-        # os.mkdir(synthea_dir)
-        # os.system("hello world")
-        # os.system(
-        #     f'cd ../synthea && ./run_synthea --exporter.baseDirectory  "{directory_uuid}"'
-        # )
-
-    # docker run --rm --network=syntheticdatagenerator_default -e SYNTHEA_SIZE=1 -e FHIR_URL=http://172.19.0.2:80/generate_receive conceptant/synthea-fhir
-
-    # def docker_test():
-    #     client = docker.from_env()
-    #     client.containers.run("ubuntu", "echo hello world")
-        # docker inspect 0e68205a99ac | jq '.[].NetworkSettings.Networks.syntheticdatagenerator_default.IPAddress'
+    def filter_synthea_response(synthea_response):
+        patients = list(filter(lambda entry: entry["resource"]["resourceType"] == "Patient", synthea_response)) 
+        for patient in patients:
+            del patient["resource"]["text"]
+        return patients

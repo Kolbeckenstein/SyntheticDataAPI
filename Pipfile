@@ -15,6 +15,9 @@ python-dotenv = "*"
 pytest = "*"
 pytest-mock = "*"
 docker = "*"
+selenium = "*"
+selenium-stealth = "*"
+fastapi-utils = "*"
 
 [packages.fastapi]
 extras = [ "all",]
