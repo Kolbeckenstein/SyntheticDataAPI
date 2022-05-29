@@ -18,6 +18,8 @@ docker = "*"
 selenium = "*"
 selenium-stealth = "*"
 fastapi-utils = "*"
+pymongo = "*"
+source = "*"
 
 [packages.fastapi]
 extras = [ "all",]

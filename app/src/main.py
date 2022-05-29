@@ -2,9 +2,6 @@ from fastapi import FastAPI, Response, Request
 from .generator import Generator
 from .scraper import Scraper
 from fastapi_utils.tasks import repeat_every
-from os import listdir
-from os.path import isfile, join, splitext
-import csv
 
 app = FastAPI()
 
@@ -30,12 +27,7 @@ async def scrape_addresses(zip: str):
 @app.on_event("startup")
 @repeat_every(seconds=60)  # 1 hour
 def process_address_csvs_task() -> None:
-    files = [file for file in listdir(".") if isfile(join(".", file))]
-    for file in files:
-        if splitext(file)[1] == ".csv":
-            with open(join(".", file), "r") as infile:
-                print(infile.read(), flush=True)
-
+    addresses = Scraper.process_address_csv()
 
     # print(request_json)
     # filenumber = 0

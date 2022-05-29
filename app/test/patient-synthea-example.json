@@ -1,4 +1,5 @@
-[
+{
+"entry": [
     {
         "resource": {
             "resourceType": "Something else"
@@ -210,3 +211,4 @@
         }
     }
 ]
+}

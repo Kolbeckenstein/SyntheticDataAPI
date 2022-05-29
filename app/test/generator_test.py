@@ -6,7 +6,19 @@ def test_generate_synthea_patient(mocker):
     client_mock = Mock()
     containers_mock = Mock()
     client_mock.containers = containers_mock
+    containers_mock.get = lambda x: containers_mock
     mocker.patch("docker.from_env", return_value = client_mock)
+    containers_mock.attrs = {
+        'NetworkSettings': {
+            'Networks': {
+                'syntheticdatagenerator_default': {
+                    'IPAddress': {
+                        '123.anything'
+                    }
+                }
+            }
+        }
+    }
 
     Generator.generate_synthea_patient()
 
